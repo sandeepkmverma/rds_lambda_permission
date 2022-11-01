@@ -1,0 +1,60 @@
+{
+     "Version": "2012-10-17",
+     "Statement": [
+         {
+             "Sid": "RDS",
+             "Action": [
+                 "rds:DescribeDBClusterSnapshots",
+                 "rds:DescribeDBClusters",
+                 "rds:DescribeDBInstances",
+                 "rds:DescribeDBSnapshots",
+                 "rds:DescribeExportTasks",
+                 "rds:StartExportTask"
+             ],
+             "Effect": "Allow",
+             "Resource": [
+                 "arn:aws:rds:ap-south-1:281176377529:cluster:tatasky-production-aurora-cluster",
+                 "arn:aws:rds:ap-south-1:281176377529:cluster:tatasky-production-native-selfcare-aurora-cluster"
+             ]
+         },
+         {
+            "Sid": "S3",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject*",
+                "s3:ListBucket",
+                "s3:GetObject*",
+                "s3:DeleteObject*",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": [
+                "arn:aws:s3:::production-tp-rds-snapshots",
+                "arn:aws:s3:::production-tp-rds-snapshots/*"
+            ]
+        }
+     ]
+ }
+ 
+ 
+ ## Trust Relationships
+ 
+ {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "export.rds.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {}
+        }
+    ]
+}
